@@ -1303,9 +1303,23 @@ function scrollToPlans(e){
 }
 
 function goToCheckout(plan){
-  const url = plan === 'monthly' ? CHECKOUT_MONTHLY_URL : CHECKOUT_LIFETIME_URL;
+  const url = plan === 'monthly'
+    ? CHECKOUT_MONTHLY_URL
+    : CHECKOUT_LIFETIME_URL;
+
+  const value = plan === 'monthly' ? 14.90 : 89.90;
+
+  if (typeof fbq === 'function') {
+    fbq('track', 'Purchase', {
+      value: value,
+      currency: 'BRL'
+    });
+  }
+
   if(url && url !== '#'){
-    window.location.href = url;
+    setTimeout(function(){
+      window.location.href = url;
+    }, 300);
   } else {
     scrollToPlans();
   }
